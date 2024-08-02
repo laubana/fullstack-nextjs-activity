@@ -1,7 +1,9 @@
 import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
+import sql from "better-sqlite3";
 import { Lucia } from "lucia";
 import { cookies } from "next/headers";
-import db from "@helpers/db";
+
+const db = sql("data.db");
 
 const adapter = new BetterSqlite3Adapter(db, {
   user: "users",

@@ -1,4 +1,6 @@
-import db from "@helpers/db";
+import sql from "better-sqlite3";
+
+const db = sql("data.db");
 
 export const addUser = (email, password) => {
   const result = db
