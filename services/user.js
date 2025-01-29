@@ -1,15 +1,18 @@
-import sql from "better-sqlite3";
+import connect from "../configs/db";
+import User from "../models/User";
 
-const db = sql("data.db");
+export const addUser = async (email, password) => {
+  await connect();
 
-export const addUser = (email, password) => {
-  const result = db
-    .prepare("INSERT INTO users (email, password) VALUES (?, ?)")
-    .run(email, password);
+  const newUser = await User.create({ email, password });
 
-  return result.lastInsertRowid;
+  return newUser;
 };
 
-export const getUser = (email) => {
-  return db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+export const getUser = async (email) => {
+  await connect();
+
+  const existingUser = await User.findOne({ email });
+
+  return existingUser;
 };

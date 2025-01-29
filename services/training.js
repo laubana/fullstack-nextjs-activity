@@ -1,9 +1,10 @@
-import sql from "better-sqlite3";
+import connect from "../configs/db";
+import Training from "../models/Training";
 
-const db = sql("data.db");
+export const getTrainings = async () => {
+  await connect();
 
-export const getTrainings = () => {
-  const query = db.prepare("SELECT * FROM trainings");
+  const existingTrainings = await Training.find();
 
-  return query.all();
+  return existingTrainings;
 };

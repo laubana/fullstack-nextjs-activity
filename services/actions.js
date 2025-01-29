@@ -1,9 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
+
 import { createAuthSession, invalidateSession } from "./auth";
 import { addUser, getUser } from "./user";
-import { hashPassword, verifyPassword } from "@helpers/hash";
+
+import { hashPassword, verifyPassword } from "../helpers/hash";
 
 // TODO
 // 219
@@ -11,7 +13,7 @@ export const signIn = async (formData) => {
   const email = formData.get("email");
   const password = formData.get("password");
 
-  const user = getUser(email);
+  const user = await getUser(email);
 
   if (!user) {
     return { status: "error", message: "Sign-in failed." };
@@ -23,7 +25,7 @@ export const signIn = async (formData) => {
     return { status: "error", message: "Sign-in failed." };
   }
 
-  await createAuthSession(user.id);
+  await createAuthSession(user._id);
   redirect("/training");
 };
 
@@ -43,8 +45,8 @@ export const signUp = async (formData) => {
   }
 
   try {
-    const userId = addUser(email, hashPassword(password));
-    await createAuthSession(userId);
+    const user = await addUser(email, hashPassword(password));
+    await createAuthSession(user._id);
     redirect("/training");
   } catch (error) {
     if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {

@@ -1,7 +1,7 @@
 import { getTrainings } from "@services/training";
 
 export default async () => {
-  const trainingSessions = getTrainings();
+  const trainingSessions = await getTrainings();
 
   return (
     <main>

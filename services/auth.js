@@ -1,14 +1,12 @@
-import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
-import sql from "better-sqlite3";
+import { MongodbAdapter } from "@lucia-auth/adapter-mongodb";
 import { Lucia } from "lucia";
+import mongoose from "mongoose";
 import { cookies } from "next/headers";
 
-const db = sql("data.db");
-
-const adapter = new BetterSqlite3Adapter(db, {
-  user: "users",
-  session: "sessions",
-});
+const adapter = new MongodbAdapter(
+  mongoose.connection.collection("sessions"),
+  mongoose.connection.collection("users")
+);
 
 const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -47,13 +45,7 @@ export const invalidateSession = async () => {
 };
 
 export const verifyAuthCookie = async () => {
-  const sessionCookie = cookies().get(lucia.sessionCookieName);
-
-  if (!sessionCookie) {
-    return { user: null, session: null };
-  }
-
-  const sessionId = sessionCookie.value;
+  const sessionId = cookies().get(lucia.sessionCookieName).value ?? null;
 
   if (!sessionId) {
     return { user: null, session: null };
