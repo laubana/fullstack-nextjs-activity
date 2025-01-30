@@ -1,13 +1,13 @@
 import { getTrainings } from "@services/training";
 
 export default async () => {
-  const trainingSessions = await getTrainings();
+  const trainings = await getTrainings();
 
   return (
     <main>
       <h1>Find your favorite activity</h1>
       <ul id="training-sessions">
-        {trainingSessions.map((training) => (
+        {trainings.map((training) => (
           <li key={training.id}>
             <img src={`/trainings/${training.image}`} alt={training.title} />
             <div>

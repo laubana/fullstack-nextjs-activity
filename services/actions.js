@@ -7,9 +7,7 @@ import { addUser, getUser } from "./user";
 
 import { hashPassword, verifyPassword } from "../helpers/hash";
 
-// TODO
-// 219
-export const signIn = async (formData) => {
+export const signIn = async (_, formData) => {
   const email = formData.get("email");
   const password = formData.get("password");
 
@@ -34,24 +32,20 @@ export const signOut = async () => {
   redirect("/");
 };
 
-// TODO
-// 219
-export const signUp = async (formData) => {
+export const signUp = async (_, formData) => {
   const email = formData.get("email");
   const password = formData.get("password");
 
   if (!email || !password || password.trim().length < 6) {
-    return { status: "error", message: "Invalid Input." };
+    return { status: "error", message: "Invalid Input" };
   }
 
-  try {
-    const user = await addUser(email, hashPassword(password));
-    await createAuthSession(user._id);
-    redirect("/training");
-  } catch (error) {
-    if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
-      return { status: "error", message: "Email already exists." };
-    }
-    throw error;
+  const newUser = await addUser(email, hashPassword(password));
+
+  if (!newUser) {
+    return { status: "error", message: "Sign-up failed." };
   }
+
+  await createAuthSession(user._id);
+  redirect("/training");
 };

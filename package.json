@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next start",
-    "dev": "next dev",
     "build": "next build",
-    "db": "node db.mjs"
+    "start": "next start",
+    "dev": "next dev"
   },
   "dependencies": {
     "@lucia-auth/adapter-mongodb": "^1.0.3",

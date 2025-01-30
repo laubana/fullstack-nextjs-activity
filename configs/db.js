@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-import "../models/Session";
-import "../models/Training";
-import "../models/User";
+import "@models/Session";
+import "@models/Training";
+import "@models/User";
 
 export default async () => {
   try {

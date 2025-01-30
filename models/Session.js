@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const SessionSchema = new mongoose.Schema(
+const sessionSchema = new mongoose.Schema(
   {
     user_id: { type: String, required: true },
     expires_at: { type: Date, required: true },
@@ -11,4 +11,4 @@ const SessionSchema = new mongoose.Schema(
 );
 
 export default mongoose.models["Session"] ||
-  mongoose.model("Session", SessionSchema);
+  mongoose.model("Session", sessionSchema);

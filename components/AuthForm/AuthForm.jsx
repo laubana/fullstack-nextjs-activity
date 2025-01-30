@@ -1,35 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { BeatLoader } from "react-spinners";
+
 import { signIn, signUp } from "@services/actions";
 
-// TODO
-// 219
 export default ({ mode }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [state, setState] = useState({ status: "ready", message: null });
+  const [state, action] = useFormState(mode === "signup" ? signUp : signIn, {
+    status: "ready",
+    message: null,
+  });
+  const status = useFormStatus();
 
   return (
-    <form
-      id="auth-form"
-      action={async (formData) => {
-        try {
-          const response =
-            mode === "signup" ? await signUp(formData) : await signIn(formData);
-
-          if (response) {
-            setState(response);
-          }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setIsSubmitting(false);
-        }
-      }}
-      onSubmit={() => setIsSubmitting(true)}
-    >
+    <form id="auth-form" action={action}>
       <div>
         <img src="/images/auth-icon.jpg" alt="A lock icon" />
       </div>
@@ -43,8 +28,8 @@ export default ({ mode }) => {
       </p>
       {state.status === "error" && <p id="form-errors">{state.message}</p>}
       <p>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? (
+        <button type="submit" disabled={status.pending}>
+          {status.pending ? (
             <BeatLoader color="#D0CFD6" />
           ) : mode === "signup" ? (
             "Sign Up"

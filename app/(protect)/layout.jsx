@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+
 import { verifyAuthCookie } from "@services/auth";
 
 export default async ({ children }) => {
