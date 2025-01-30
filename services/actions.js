@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createAuthSession, invalidateSession } from "./auth";
 import { addUser, getUser } from "./user";
 
-import { hashPassword, verifyPassword } from "../helpers/hash";
+import { hashPassword, verifyPassword } from "@helpers/hash";
 
 export const signIn = async (_, formData) => {
   const email = formData.get("email");

@@ -11,7 +11,7 @@ export default async () => {
       <ul id="training-sessions">
         {trainings.map((training) => (
           <li key={training.id}>
-            <img src={`/trainings/${training.image}`} alt={training.title} />
+            <img src={`/trainings/${training.imageUrl}`} alt={training.title} />
             <div>
               <h2>{training.title}</h2>
               <p>{training.description}</p>
