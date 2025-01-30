@@ -1,5 +1,7 @@
 import { getTrainings } from "@services/training";
 
+export const revalidate = 60;
+
 export default async () => {
   const trainings = await getTrainings();
 
