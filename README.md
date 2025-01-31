@@ -1,4 +1,4 @@
-# Next.js Full-Stack
+# Next.js Full-Stack with App Router
 
 ## Available Scripts
 
