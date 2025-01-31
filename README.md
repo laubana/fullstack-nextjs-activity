@@ -16,6 +16,8 @@ In the project directory, you can run:
 
 ### Lucia with MongoDB
 
+### app/()
+
 ### revalidate
 
 ### useFormState
