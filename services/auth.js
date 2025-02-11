@@ -1,23 +1,10 @@
-import { MongodbAdapter } from "@lucia-auth/adapter-mongodb";
-import { Lucia } from "lucia";
-import mongoose from "mongoose";
 import { cookies } from "next/headers";
 
-const adapter = new MongodbAdapter(
-  mongoose.connection.collection("sessions"),
-  mongoose.connection.collection("users")
-);
-
-const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    attributes: { secure: process.env.NODE_ENV === "production" },
-    expires: false,
-  },
-});
+import luciaConfig from "@configs/luciaConfig";
 
 export const createAuthSession = async (userId) => {
-  const session = await lucia.createSession(userId, {});
-  const sessionCookie = lucia.createSessionCookie(session.id);
+  const session = await luciaConfig.lucia.createSession(userId, {});
+  const sessionCookie = luciaConfig.lucia.createSessionCookie(session.id);
 
   cookies().set(
     sessionCookie.name,
@@ -26,16 +13,16 @@ export const createAuthSession = async (userId) => {
   );
 };
 
-export const invalidateSession = async () => {
-  const { session } = await verifyAuthCookie();
+export const invalidateAuthSession = async () => {
+  const { session } = await validateAuthSession();
 
   if (!session) {
     return;
   }
 
-  await lucia.invalidateSession(session.id);
+  await luciaConfig.lucia.invalidateSession(session.id);
 
-  const sessionCookie = lucia.createBlankSessionCookie();
+  const sessionCookie = luciaConfig.lucia.createBlankSessionCookie();
 
   cookies().set(
     sessionCookie.name,
@@ -44,18 +31,20 @@ export const invalidateSession = async () => {
   );
 };
 
-export const verifyAuthCookie = async () => {
-  const sessionId = cookies().get(lucia.sessionCookieName).value ?? null;
+export const validateAuthSession = async () => {
+  const sessionId = cookies().get(luciaConfig.lucia.sessionCookieName)?.value;
 
   if (!sessionId) {
     return { user: null, session: null };
   }
 
-  const result = await lucia.validateSession(sessionId);
+  const result = await luciaConfig.lucia.validateSession(sessionId);
 
   try {
     if (result.session && result.session.fresh) {
-      const sessionCookie = lucia.createSessionCookie(result.session.id);
+      const sessionCookie = luciaConfig.lucia.createSessionCookie(
+        result.session.id
+      );
 
       cookies().set(
         sessionCookie.name,
@@ -65,7 +54,7 @@ export const verifyAuthCookie = async () => {
     }
 
     if (!result.session) {
-      const sessionCookie = lucia.createBlankSessionCookie();
+      const sessionCookie = luciaConfig.lucia.createBlankSessionCookie();
 
       cookies().set(
         sessionCookie.name,
@@ -73,7 +62,9 @@ export const verifyAuthCookie = async () => {
         sessionCookie.attributes
       );
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 
   return result;
 };

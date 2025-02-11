@@ -16,7 +16,7 @@ export default ({ mode }) => {
   return (
     <form id="auth-form" action={action}>
       <div>
-        <img src="/images/auth-icon.jpg" alt="A lock icon" />
+        <img src="/icon.png" alt="lock" />
       </div>
       <p>
         <label htmlFor="email">Email</label>

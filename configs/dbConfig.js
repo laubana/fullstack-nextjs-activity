@@ -4,10 +4,8 @@ import "@models/Session";
 import "@models/Training";
 import "@models/User";
 
-export default async () => {
+const connect = async () => {
   try {
-    mongoose.set("strictQuery", false);
-
     await mongoose.connect(process.env.DB_URI);
   } catch (error) {
     console.error(error);
@@ -15,3 +13,5 @@ export default async () => {
     console.error("Failed to connect to DB 🚨");
   }
 };
+
+export default { connect };

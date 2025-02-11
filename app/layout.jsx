@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Next Auth",
+  title: "Auth",
   description: "Next.js Authentication",
 };
 

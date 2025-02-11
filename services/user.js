@@ -1,8 +1,8 @@
-import connect from "@configs/db";
+import dbConfig from "@configs/dbConfig";
 import User from "@models/User";
 
 export const addUser = async (email, password) => {
-  await connect();
+  await dbConfig.connect();
 
   const existingUser = await User.findOne({ email }).lean();
 
@@ -16,7 +16,7 @@ export const addUser = async (email, password) => {
 };
 
 export const getUser = async (email) => {
-  await connect();
+  await dbConfig.connect();
 
   const existingUser = await User.findOne({ email }).lean();
 

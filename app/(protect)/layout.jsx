@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 
-import { verifyAuthCookie } from "@services/auth";
+import { validateAuthSession } from "@services/auth";
 
 export default async ({ children }) => {
-  const result = await verifyAuthCookie();
+  const result = await validateAuthSession();
 
   if (!result.user) {
     return redirect("/");

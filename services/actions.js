@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 
-import { createAuthSession, invalidateSession } from "./auth";
+import { createAuthSession, invalidateAuthSession } from "./auth";
 import { addUser, getUser } from "./user";
 
 import { hashPassword, verifyPassword } from "@helpers/hash";
@@ -28,7 +28,7 @@ export const signIn = async (_, formData) => {
 };
 
 export const signOut = async () => {
-  await invalidateSession();
+  await invalidateAuthSession();
   redirect("/");
 };
 
